@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Heyday Marketing Calendar 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --feather: #053E3F;
+  --sky: #A0DADA;
+  --lemon: #E9E84A;
+  --off-white: #F2F4F1;
+  --purple: #4F2A50;
+  --pink: #E6D3C4;
+  --text: #053E3F;
+  --muted: #6b7170;
+  --border: #d6dcd8;
+  --podcast: #053E3F;
+  --podcast-tint: rgba(5,62,63,0.10);
+  --instagram: #A0DADA;
+  --instagram-tint: rgba(160,218,218,0.30);
+  --instagram-text: #2d6e6f;
+  --youtube: #E9E84A;
+  --youtube-tint: rgba(233,232,74,0.28);
+  --youtube-text: #6b6a18;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  background: var(--off-white);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 14px;
+}
+.app {
+  max-width: 1700px;
+  margin: 0 auto;
+  padding: 22px 26px 60px;
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--feather);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  z-index: 999;
+  transition: transform 0.3s ease;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* Sync indicator */
+.sync-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: #ccc;
+  display: inline-block;
+  margin-right: 6px;
+  transition: background 0.3s;
+}
+.sync-dot.syncing { background: var(--lemon); animation: pulse 1s infinite; }
+.sync-dot.synced  { background: #5cb85c; }
+.sync-dot.error   { background: #e55; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+header.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+.brand { display: flex; align-items: baseline; gap: 12px; }
+.brand h1 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 26px;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -0.01em;
+  color: var(--feather);
+}
+.brand .subtitle { color: var(--muted); font-size: 13px; font-weight: 500; }
+.controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+button {
+  font-family: 'DM Sans', inherit;
+  font-size: 13px;
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  background: white;
+  color: var(--text);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  font-weight: 500;
+}
+button:hover { background: var(--pink); }
+button.primary { background: var(--feather); color: white; border-color: var(--feather); }
+button.primary:hover { background: #0a5152; }
+.view-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: white; }
+.view-toggle button { border: none; border-radius: 0; background: transparent; }
+.view-toggle button.active { background: var(--feather); color: white; }
+.year-nav, .month-nav { display: inline-flex; align-items: center; gap: 6px; background: white; border: 1px solid var(--border); border-radius: 8px; padding: 0 4px; }
+.year-nav button, .month-nav button { border: none; padding: 6px 8px; background: transparent; }
+.year-nav .label, .month-nav .label { min-width: 100px; text-align: center; font-weight: 600; font-size: 13px; }
+
+.legend {
+  display: flex; flex-wrap: wrap; gap: 18px 22px;
+  padding: 12px 16px;
+  background: white; border: 1px solid var(--border); border-radius: 12px;
+  margin-bottom: 18px; font-size: 12px; align-items: center;
+}
+.legend-group { display: flex; align-items: center; gap: 8px; }
+.legend-group strong { color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 10px; margin-right: 4px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; line-height: 1.4; }
+.chip.solid.podcast    { background: var(--podcast); color: white; }
+.chip.solid.instagram  { background: var(--instagram); color: var(--podcast); }
+.chip.solid.youtube    { background: var(--youtube); color: var(--podcast); }
+.chip.outlined.podcast   { background: var(--podcast-tint); border: 1.5px dashed var(--podcast); color: var(--podcast); }
+.chip.outlined.instagram { background: var(--instagram-tint); border: 1.5px dashed var(--instagram); color: var(--instagram-text); }
+.chip.outlined.youtube   { background: var(--youtube-tint); border: 1.5px dashed var(--youtube); color: var(--youtube-text); }
+.chip.done { text-decoration: line-through; opacity: 0.55; }
+
+/* Year grid */
+.year-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; }
+@media (max-width:1200px) { .year-grid { grid-template-columns: repeat(3,1fr); } }
+@media (max-width:820px)  { .year-grid { grid-template-columns: repeat(2,1fr); } }
+@media (max-width:520px)  { .year-grid { grid-template-columns: 1fr; } }
+.month-card { background: white; border: 1px solid var(--border); border-radius: 12px; padding: 14px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
+.month-card:hover { border-color: var(--feather); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(5,62,63,0.08); }
+.month-card-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.month-card-head h3 { font-family: 'DM Serif Display', Georgia, serif; font-size: 15px; margin: 0; font-weight: 400; color: var(--feather); }
+.month-card-head .count { font-size: 11px; color: var(--muted); }
+.mini-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 4px; }
+.mini-day-header { font-size: 9px; font-weight: 700; color: var(--muted); text-align: center; padding-bottom: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+.mini-day { aspect-ratio: 1/1; border-radius: 6px; background: var(--off-white); display: flex; flex-direction: column; padding: 3px 4px; font-size: 10px; position: relative; overflow: hidden; }
+.mini-day.empty { background: transparent; }
+.mini-day .num { font-weight: 600; color: var(--muted); font-size: 10px; line-height: 1; }
+.mini-day.today { background: var(--sky); }
+.mini-day.today .num { color: var(--feather); }
+.mini-day .dots { display: flex; flex-wrap: wrap; gap: 2px; margin-top: 3px; }
+.mini-dot { width: 6px; height: 6px; border-radius: 50%; }
+.mini-dot.podcast.solid    { background: var(--podcast); }
+.mini-dot.instagram.solid  { background: var(--instagram); border: 1px solid #6fb5b6; }
+.mini-dot.youtube.solid    { background: var(--youtube); border: 1px solid #c9c83d; }
+.mini-dot.podcast.outlined   { background: white; border: 1.5px solid var(--podcast); }
+.mini-dot.instagram.outlined { background: white; border: 1.5px solid var(--instagram); }
+.mini-dot.youtube.outlined   { background: white; border: 1.5px solid var(--youtube); }
+.mini-dot.done { opacity: 0.35; }
+
+/* Month view */
+.month-view { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px 22px; }
+.month-view-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+.month-view-header h2 { font-family: 'DM Serif Display', Georgia, serif; margin: 0; font-size: 22px; color: var(--feather); font-weight: 400; }
+.full-grid { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px; }
+.day-header { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 6px 4px 4px; text-align: left; }
+.day-cell { background: var(--off-white); border: 1px solid var(--border); border-radius: 10px; padding: 9px 9px 10px; min-height: 150px; display: flex; flex-direction: column; gap: 5px; transition: background 0.15s, border-color 0.15s; }
+.day-cell.empty { background: transparent; border: 1px dashed var(--border); opacity: 0.45; min-height: 150px; }
+.day-cell.today { background: #d8eded; border-color: var(--feather); }
+.day-cell.drag-over { background: var(--pink); border-color: var(--purple); border-style: dashed; }
+.day-num { font-size: 13px; font-weight: 700; color: var(--text); display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+.day-num .add-btn { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--border); background: white; cursor: pointer; font-size: 14px; line-height: 1; padding: 0; display: none; align-items: center; justify-content: center; color: var(--feather); font-weight: 600; }
+.day-cell:hover .add-btn { display: inline-flex; }
+.day-num .add-btn:hover { background: var(--feather); color: white; border-color: var(--feather); }
+.event-chip { display: flex; align-items: flex-start; gap: 6px; padding: 5px 8px; border-radius: 8px; font-size: 11px; font-weight: 600; cursor: grab; user-select: none; position: relative; line-height: 1.3; }
+.event-chip:active { cursor: grabbing; }
+.event-chip.dragging { opacity: 0.4; }
+.event-chip .check { width: 14px; height: 14px; min-width: 14px; border-radius: 50%; border: 1.5px solid currentColor; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 9px; flex-shrink: 0; margin-top: 1px; background: transparent; }
+.event-chip.done .check::after { content: "✓"; font-size: 9px; font-weight: 700; line-height: 1; }
+.event-chip .label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.event-chip.solid.podcast    { background: var(--podcast); color: white; }
+.event-chip.solid.instagram  { background: var(--instagram); color: var(--podcast); }
+.event-chip.solid.youtube    { background: var(--youtube); color: var(--podcast); }
+.event-chip.outlined.podcast   { background: var(--podcast-tint); border: 1.5px dashed var(--podcast); color: var(--podcast); }
+.event-chip.outlined.instagram { background: var(--instagram-tint); border: 1.5px dashed var(--instagram); color: var(--instagram-text); }
+.event-chip.outlined.youtube   { background: var(--youtube-tint); border: 1.5px dashed var(--youtube); color: var(--youtube-text); }
+.event-chip.done .label { text-decoration: line-through; opacity: 0.7; }
+
+/* Modal */
+.modal-backdrop { position: fixed; inset: 0; background: rgba(5,62,63,0.45); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
+.modal { background: white; border-radius: 14px; padding: 22px 24px 20px; width: 100%; max-width: 480px; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+.modal h3 { font-family: 'DM Serif Display', Georgia, serif; margin: 0 0 18px 0; font-size: 20px; color: var(--feather); font-weight: 400; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.field input, .field textarea, .field select { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'DM Sans', inherit; background: var(--off-white); color: var(--text); }
+.field input:focus, .field textarea:focus { outline: 2px solid var(--sky); outline-offset: 0; background: white; }
+.field textarea { resize: vertical; min-height: 60px; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.option-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.option-pills button { padding: 6px 12px; border-radius: 999px; border: 1.5px solid var(--border); background: white; font-size: 12px; font-weight: 600; cursor: pointer; }
+.option-pills button.active.podcast   { background: var(--podcast); color: white; border-color: var(--podcast); }
+.option-pills button.active.instagram { background: var(--instagram); color: var(--podcast); border-color: var(--instagram); }
+.option-pills button.active.youtube   { background: var(--youtube); color: var(--podcast); border-color: var(--youtube); }
+.option-pills button.active.planning  { background: white; border-color: var(--feather); color: var(--feather); border-style: dashed; }
+.option-pills button.active.posting   { background: var(--feather); color: white; border-color: var(--feather); }
+.option-pills button.active.statusOpen { background: white; color: var(--feather); border-color: var(--feather); }
+.option-pills button.active.statusDone { background: var(--feather); color: white; border-color: var(--feather); }
+.modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 22px; align-items: center; }
+.modal-actions .danger { margin-right: auto; background: white; color: #b22; border-color: #f0c8c8; }
+.modal-actions .danger:hover { background: #fef0f0; }
+
+footer.app-footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--border); font-size: 11px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+.loading-screen { display: flex; align-items: center; justify-content: center; min-height: 300px; flex-direction: column; gap: 12px; color: var(--muted); font-size: 14px; }
+.spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--feather); border-radius: 50%; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="app-header">
+    <div class="brand">
+      <h1>Heyday Marketing Calendar</h1>
+      <span class="subtitle" id="brandSubtitle">2026</span>
+    </div>
+    <div class="controls">
+      <span class="sync-dot" id="syncDot" title="Sync status"></span>
+      <div class="view-toggle" role="tablist">
+        <button id="viewYear" class="active">Year</button>
+        <button id="viewMonth">Month</button>
+      </div>
+      <div class="year-nav">
+        <button id="yearPrev">‹</button>
+        <span class="label" id="yearLabel">2026</span>
+        <button id="yearNext">›</button>
+      </div>
+      <button class="primary" id="todayBtn">Today</button>
+    </div>
+  </header>
+
+  <div class="legend">
+    <div class="legend-group">
+      <strong>Platform</strong>
+      <span class="chip solid podcast">Podcast</span>
+      <span class="chip solid instagram">Instagram</span>
+      <span class="chip solid youtube">YouTube</span>
+    </div>
+    <div class="legend-group">
+      <strong>Type</strong>
+      <span class="chip outlined podcast">Planning · dashed</span>
+      <span class="chip solid podcast">Posting · solid</span>
+      <span class="chip solid podcast done">Done · struck</span>
+    </div>
+    <div class="legend-group" style="margin-left:auto">
+      <button id="exportBtn">Export</button>
+      <button id="importBtn">Import</button>
+      <input type="file" id="importFile" accept="application/json" style="display:none">
+    </div>
+  </div>
+
+  <main id="container"></main>
+
+  <footer class="app-footer">
+    <span id="countLabel">Loading…</span>
+    <span>Click any day's <b>+</b> to add · drag chips to move · click a chip to edit · click circle to mark done</span>
+  </footer>
+</div>
+
+<div id="modalRoot"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+
+// ─── Supabase config ───────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://bldtaywzmrfofzztnesg.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_6IJAkakQt4NIzgwv2jF_Cg_EebaH-_0';
+const TABLE = 'events';
+
+// ─── API helpers ──────────────────────────────────────────────────────────
+async function sbFetch(path, options = {}) {
+  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
+    ...options,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': options.prefer || '',
+      ...(options.headers || {})
+    }
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
+  }
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+async function loadEvents() {
+  return sbFetch(TABLE + '?select=*&order=date.asc');
+}
+async function upsertEvent(ev) {
+  return sbFetch(TABLE, {
+    method: 'POST',
+    prefer: 'resolution=merge-duplicates',
+    headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
+    body: JSON.stringify(ev)
+  });
+}
+async function deleteEvent(id) {
+  return sbFetch(TABLE + '?id=eq.' + id, { method: 'DELETE' });
+}
+
+// ─── State ────────────────────────────────────────────────────────────────
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WEEKDAYS = ['Mon','Tue','Wed','Thu','Fri'];
+
+let state = {
+  year: 2026,
+  view: 'year',
+  monthIndex: new Date().getMonth(),
+  events: []
+};
+
+// ─── Toast ────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ─── Sync dot ─────────────────────────────────────────────────────────────
+function setSyncState(s) {
+  const d = document.getElementById('syncDot');
+  d.className = 'sync-dot ' + s;
+  d.title = s === 'syncing' ? 'Saving…' : s === 'synced' ? 'All changes saved' : 'Sync error';
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────
+function uid() { return Math.random().toString(36).slice(2,10) + Date.now().toString(36); }
+function pad2(n) { return String(n).padStart(2,'0'); }
+function dateKey(y,m,d) { return y+'-'+pad2(m+1)+'-'+pad2(d); }
+function parseDateKey(s) { const [y,m,d] = s.split('-').map(Number); return {y,m:m-1,d}; }
+function getWeekdays(year, monthIndex) {
+  const days = [];
+  const last = new Date(year, monthIndex+1, 0).getDate();
+  for (let d = 1; d <= last; d++) {
+    const dow = new Date(year, monthIndex, d).getDay();
+    if (dow >= 1 && dow <= 5) days.push({ day: d, weekday: dow - 1 });
+  }
+  return days;
+}
+function eventsForMonth(year, monthIndex) {
+  const map = {};
+  let count = 0;
+  state.events.forEach(e => {
+    const { y, m } = parseDateKey(e.date);
+    if (y === year && m === monthIndex) {
+      (map[e.date] = map[e.date] || []).push(e);
+      count++;
+    }
+  });
+  return { map, count };
+}
+function todayKey() {
+  const t = new Date();
+  return dateKey(t.getFullYear(), t.getMonth(), t.getDate());
+}
+
+// ─── Render ───────────────────────────────────────────────────────────────
+const container = document.getElementById('container');
+
+function render() {
+  document.getElementById('yearLabel').textContent = state.year;
+  document.getElementById('brandSubtitle').textContent =
+    state.view === 'month' ? (MONTHS[state.monthIndex] + ' ' + state.year) : String(state.year);
+  document.getElementById('viewYear').classList.toggle('active', state.view === 'year');
+  document.getElementById('viewMonth').classList.toggle('active', state.view === 'month');
+  document.getElementById('countLabel').textContent =
+    state.events.length + ' event' + (state.events.length === 1 ? '' : 's');
+  if (state.view === 'year') renderYear(); else renderMonth();
+}
+
+function renderYear() {
+  const grid = document.createElement('div');
+  grid.className = 'year-grid';
+  for (let m = 0; m < 12; m++) grid.appendChild(renderMonthCard(state.year, m));
+  container.replaceChildren(grid);
+}
+
+function renderMonthCard(year, monthIndex) {
+  const card = document.createElement('div');
+  card.className = 'month-card';
+  card.addEventListener('click', () => {
+    state.monthIndex = monthIndex; state.view = 'month'; render();
+  });
+  const head = document.createElement('div');
+  head.className = 'month-card-head';
+  const h = document.createElement('h3');
+  h.textContent = MONTHS[monthIndex];
+  const cnt = document.createElement('span');
+  cnt.className = 'count';
+  const { map, count } = eventsForMonth(year, monthIndex);
+  cnt.textContent = count ? (count + (count === 1 ? ' item' : ' items')) : '';
+  head.appendChild(h); head.appendChild(cnt);
+  card.appendChild(head);
+
+  const grid = document.createElement('div');
+  grid.className = 'mini-grid';
+  WEEKDAYS.forEach(w => {
+    const h = document.createElement('div');
+    h.className = 'mini-day-header';
+    h.textContent = w[0];
+    grid.appendChild(h);
+  });
+  const days = getWeekdays(year, monthIndex);
+  const firstWeekday = days.length ? days[0].weekday : 0;
+  for (let i = 0; i < firstWeekday; i++) {
+    const e = document.createElement('div'); e.className = 'mini-day empty'; grid.appendChild(e);
+  }
+  const tk = todayKey();
+  days.forEach(({ day }) => {
+    const cell = document.createElement('div');
+    cell.className = 'mini-day';
+    const key = dateKey(year, monthIndex, day);
+    if (key === tk) cell.classList.add('today');
+    const num = document.createElement('div'); num.className = 'num'; num.textContent = day;
+    cell.appendChild(num);
+    const evs = map[key] || [];
+    if (evs.length) {
+      const dots = document.createElement('div'); dots.className = 'dots';
+      evs.slice(0,8).forEach(e => {
+        const dot = document.createElement('span');
+        dot.className = 'mini-dot ' + e.platform + ' ' + (e.type === 'planning' ? 'outlined' : 'solid') + (e.done ? ' done' : '');
+        dots.appendChild(dot);
+      });
+      cell.appendChild(dots);
+    }
+    grid.appendChild(cell);
+  });
+  card.appendChild(grid);
+  return card;
+}
+
+function renderMonth() {
+  const wrapper = document.createElement('div');
+  wrapper.className = 'month-view';
+  const head = document.createElement('div');
+  head.className = 'month-view-header';
+  const h2 = document.createElement('h2');
+  h2.textContent = MONTHS[state.monthIndex] + ' ' + state.year;
+  const nav = document.createElement('div');
+  nav.className = 'month-nav';
+  const prev = document.createElement('button'); prev.textContent = '‹';
+  prev.addEventListener('click', () => {
+    if (state.monthIndex === 0) { state.monthIndex = 11; state.year -= 1; } else state.monthIndex -= 1;
+    render();
+  });
+  const next = document.createElement('button'); next.textContent = '›';
+  next.addEventListener('click', () => {
+    if (state.monthIndex === 11) { state.monthIndex = 0; state.year += 1; } else state.monthIndex += 1;
+    render();
+  });
+  nav.appendChild(prev); nav.appendChild(next);
+  head.appendChild(h2); head.appendChild(nav);
+  wrapper.appendChild(head);
+
+  const grid = document.createElement('div');
+  grid.className = 'full-grid';
+  WEEKDAYS.forEach(w => {
+    const h = document.createElement('div'); h.className = 'day-header'; h.textContent = w; grid.appendChild(h);
+  });
+  const days = getWeekdays(state.year, state.monthIndex);
+  const firstWeekday = days.length ? days[0].weekday : 0;
+  for (let i = 0; i < firstWeekday; i++) {
+    const e = document.createElement('div'); e.className = 'day-cell empty'; grid.appendChild(e);
+  }
+  const { map } = eventsForMonth(state.year, state.monthIndex);
+  const tk = todayKey();
+  days.forEach(({ day }) => {
+    const cell = document.createElement('div');
+    cell.className = 'day-cell';
+    const key = dateKey(state.year, state.monthIndex, day);
+    cell.dataset.date = key;
+    if (key === tk) cell.classList.add('today');
+    const num = document.createElement('div');
+    num.className = 'day-num';
+    const numLabel = document.createElement('span'); numLabel.textContent = day;
+    const addBtn = document.createElement('button');
+    addBtn.className = 'add-btn'; addBtn.textContent = '+'; addBtn.title = 'Add event';
+    addBtn.addEventListener('click', e => { e.stopPropagation(); openModal({ date: key }); });
+    num.appendChild(numLabel); num.appendChild(addBtn);
+    cell.appendChild(num);
+    (map[key] || []).forEach(ev => cell.appendChild(makeEventChip(ev)));
+    cell.addEventListener('dragover', e => { e.preventDefault(); cell.classList.add('drag-over'); });
+    cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
+    cell.addEventListener('drop', async e => {
+      e.preventDefault(); cell.classList.remove('drag-over');
+      const id = e.dataTransfer.getData('text/plain');
+      const ev = state.events.find(x => x.id === id);
+      if (ev && ev.date !== key) {
+        ev.date = key;
+        setSyncState('syncing');
+        try { await upsertEvent(ev); setSyncState('synced'); showToast('Event moved'); render(); }
+        catch(err) { setSyncState('error'); showToast('Move failed — try again'); }
+      }
+    });
+    grid.appendChild(cell);
+  });
+  wrapper.appendChild(grid);
+  container.replaceChildren(wrapper);
+}
+
+function makeEventChip(ev) {
+  const chip = document.createElement('div');
+  chip.className = 'event-chip ' + ev.platform + ' ' + (ev.type === 'planning' ? 'outlined' : 'solid') + (ev.done ? ' done' : '');
+  chip.draggable = true;
+  chip.dataset.id = ev.id;
+  chip.title = ev.title + ' — ' + ev.platform + ' ' + ev.type + (ev.notes ? '\n' + ev.notes : '');
+  const check = document.createElement('span');
+  check.className = 'check';
+  check.addEventListener('click', async e => {
+    e.stopPropagation();
+    ev.done = !ev.done;
+    setSyncState('syncing');
+    try { await upsertEvent(ev); setSyncState('synced'); showToast(ev.done ? 'Marked done ✓' : 'Marked open'); render(); }
+    catch(err) { setSyncState('error'); ev.done = !ev.done; }
+  });
+  const label = document.createElement('span');
+  label.className = 'label'; label.textContent = ev.title || '(untitled)';
+  chip.appendChild(check); chip.appendChild(label);
+  chip.addEventListener('click', e => { if (e.target === check) return; openModal(ev); });
+  chip.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', ev.id);
+    e.dataTransfer.effectAllowed = 'move';
+    chip.classList.add('dragging');
+  });
+  chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+  return chip;
+}
+
+// ─── Modal ────────────────────────────────────────────────────────────────
+function openModal(seed) {
+  const editing = !!seed.id;
+  const data = {
+    id: seed.id || uid(),
+    date: seed.date || todayKey(),
+    platform: seed.platform || 'podcast',
+    type: seed.type || 'planning',
+    title: seed.title || '',
+    notes: seed.notes || '',
+    done: !!seed.done
+  };
+  const root = document.getElementById('modalRoot');
+  root.innerHTML = '';
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.addEventListener('click', e => { if (e.target === backdrop) root.innerHTML = ''; });
+  const modal = document.createElement('div');
+  modal.className = 'modal';
+  modal.innerHTML =
+    '<h3>' + (editing ? 'Edit event' : 'New event') + '</h3>' +
+    '<div class="field"><label>Title</label>' +
+      '<input id="m_title" type="text" placeholder="e.g., Episode 12 — Guest interview"></div>' +
+    '<div class="field-row">' +
+      '<div class="field"><label>Date</label><input id="m_date" type="date"></div>' +
+      '<div class="field"><label>Status</label>' +
+        '<div class="option-pills" id="m_done">' +
+          '<button class="statusOpen" data-v="false">Open</button>' +
+          '<button class="statusDone" data-v="true">Done</button>' +
+        '</div></div>' +
+    '</div>' +
+    '<div class="field"><label>Platform</label>' +
+      '<div class="option-pills" id="m_platform">' +
+        '<button class="podcast" data-v="podcast">Podcast</button>' +
+        '<button class="instagram" data-v="instagram">Instagram</button>' +
+        '<button class="youtube" data-v="youtube">YouTube</button>' +
+      '</div></div>' +
+    '<div class="field"><label>Type</label>' +
+      '<div class="option-pills" id="m_type">' +
+        '<button class="planning" data-v="planning">Planning</button>' +
+        '<button class="posting" data-v="posting">Posting</button>' +
+      '</div></div>' +
+    '<div class="field"><label>Notes</label>' +
+      '<textarea id="m_notes" placeholder="links, references, hooks..."></textarea></div>' +
+    '<div class="modal-actions">' +
+      (editing ? '<button class="danger" id="m_delete">Delete</button>' : '') +
+      '<button id="m_cancel">Cancel</button>' +
+      '<button class="primary" id="m_save">Save</button>' +
+    '</div>';
+  backdrop.appendChild(modal);
+  root.appendChild(backdrop);
+
+  modal.querySelector('#m_title').value = data.title;
+  modal.querySelector('#m_date').value = data.date;
+  modal.querySelector('#m_notes').value = data.notes;
+
+  function setupPills(groupId, key, transform) {
+    const group = modal.querySelector(groupId);
+    function refresh() {
+      group.querySelectorAll('button').forEach(b => {
+        const v = transform ? transform(b.dataset.v) : b.dataset.v;
+        b.classList.toggle('active', String(v) === String(data[key]));
+      });
+    }
+    group.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => {
+        data[key] = transform ? transform(b.dataset.v) : b.dataset.v; refresh();
+      });
+    });
+    refresh();
+  }
+  setupPills('#m_platform', 'platform');
+  setupPills('#m_type', 'type');
+  setupPills('#m_done', 'done', v => v === 'true');
+
+  modal.querySelector('#m_cancel').addEventListener('click', () => { root.innerHTML = ''; });
+
+  if (editing) {
+    modal.querySelector('#m_delete').addEventListener('click', async () => {
+      if (!confirm('Delete this event?')) return;
+      setSyncState('syncing');
+      try {
+        await deleteEvent(data.id);
+        state.events = state.events.filter(x => x.id !== data.id);
+        setSyncState('synced'); showToast('Event deleted'); render(); root.innerHTML = '';
+      } catch(err) { setSyncState('error'); showToast('Delete failed — try again'); }
+    });
+  }
+
+  modal.querySelector('#m_save').addEventListener('click', async () => {
+    data.title = modal.querySelector('#m_title').value.trim() || '(untitled)';
+    data.date  = modal.querySelector('#m_date').value || data.date;
+    data.notes = modal.querySelector('#m_notes').value.trim();
+    setSyncState('syncing');
+    try {
+      await upsertEvent(data);
+      if (editing) {
+        const i = state.events.findIndex(x => x.id === data.id);
+        if (i >= 0) state.events[i] = data; else state.events.push(data);
+      } else {
+        state.events.push(data);
+      }
+      setSyncState('synced'); showToast(editing ? 'Event updated ✓' : 'Event added ✓');
+      render(); root.innerHTML = '';
+    } catch(err) { setSyncState('error'); showToast('Save failed — try again'); console.error(err); }
+  });
+
+  setTimeout(() => modal.querySelector('#m_title').focus(), 50);
+}
+
+// ─── Wire up controls ─────────────────────────────────────────────────────
+document.getElementById('viewYear').addEventListener('click', () => { state.view = 'year'; render(); });
+document.getElementById('viewMonth').addEventListener('click', () => { state.view = 'month'; render(); });
+document.getElementById('yearPrev').addEventListener('click', () => { state.year -= 1; render(); });
+document.getElementById('yearNext').addEventListener('click', () => { state.year += 1; render(); });
+document.getElementById('todayBtn').addEventListener('click', () => {
+  const t = new Date(); state.year = t.getFullYear(); state.monthIndex = t.getMonth(); state.view = 'month'; render();
+});
+document.getElementById('exportBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify({ events: state.events }, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'heyday-calendar-' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+});
+document.getElementById('importBtn').addEventListener('click', () => document.getElementById('importFile').click());
+document.getElementById('importFile').addEventListener('change', async e => {
+  const file = e.target.files[0]; if (!file) return;
+  try {
+    const text = await file.text();
+    const parsed = JSON.parse(text);
+    if (Array.isArray(parsed.events)) {
+      if (confirm('Import ' + parsed.events.length + ' events? This will add to existing events.')) {
+        setSyncState('syncing');
+        for (const ev of parsed.events) { await upsertEvent(ev); }
+        const fresh = await loadEvents();
+        state.events = fresh || [];
+        setSyncState('synced'); showToast('Import complete ✓'); render();
+      }
+    }
+  } catch(err) { showToast('Could not import file'); }
+  e.target.value = '';
+});
+
+// ─── Init: load from Supabase ─────────────────────────────────────────────
+(async function init() {
+  container.innerHTML = '<div class="loading-screen"><div class="spinner"></div><span>Loading calendar…</span></div>';
+  setSyncState('syncing');
+  try {
+    const events = await loadEvents();
+    state.events = events || [];
+    setSyncState('synced');
+    render();
+  } catch(err) {
+    setSyncState('error');
+    container.innerHTML = '<div class="loading-screen"><span>⚠️ Could not connect to database. Check your Supabase setup.</span></div>';
+    console.error(err);
+  }
+})();
+
+})();
+</script>
+</body>
+</html>
